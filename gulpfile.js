@@ -9,17 +9,19 @@ gulp.task('server', function() {
 
     browserSync({
         server: {
-            baseDir: "./"
+            baseDir: "src"
         }
     });
+
+    gulp.watch("src/*.html").on('change', browserSync.reload);
 });
 
 gulp.task('styles', function() {
-    return gulp.src('./sass/**/*.+(sass|scss)')
+    return gulp.src('src/sass/**/*.+(sass|scss)')
         .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
         .pipe(rename({
-            prefix: "",
             suffix: ".min",
+            prefix: "",
         }))
         .pipe(autoprefixer({
             overrideBrowserslist: ['last 2 versions'],
@@ -30,8 +32,8 @@ gulp.task('styles', function() {
 });
 
 gulp.task('watch', function() {
-    gulp.watch("./sass/*.+(sass|scss)", gulp.parallel('styles'));
-    gulp.watch("./*.html").on("change", browserSync.reload);
+    gulp.watch("src/sass/**/*.+(sass|scss)", gulp.parallel('styles'));
+    gulp.watch("src/*.html").on("change", browserSync.reload);
 
 });
 
